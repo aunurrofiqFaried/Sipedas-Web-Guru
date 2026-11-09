@@ -1,5 +1,5 @@
-import Segera from "@/components/segera";
+import CariSiswa from "./cari-siswa";
 
 export default function Page() {
-  return <Segera judul="Poin" keterangan="Catat pelanggaran, beri remisi, dan lihat riwayat poin siswa." />;
+  return <CariSiswa />;
 }

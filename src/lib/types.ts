@@ -186,3 +186,44 @@ export type Acara = {
   tanggal_selesai: string;
   keterangan: string | null;
 };
+
+export type SiswaCari = { id: number; nis: string; nama: string; kelas: string | null };
+
+export type JenisPelanggaran = { id: number; nama: string; kategori: string | null; poin: number };
+
+export type JenisRemisi = { id: number; nama: string; poin: number; keterangan: string | null };
+
+export type CatatanPoin = {
+  id: number;
+  poin: number;
+  tanggal: string;
+  keterangan: string | null;
+  jenis: { id: number; nama: string } | null;
+  pencatat: { id: number; name: string } | null;
+};
+
+export type SpSiswa = {
+  id: number;
+  status: "menunggu" | "disetujui" | "ditolak";
+  total_poin_saat_terbit: number;
+  aturan: { id: number; nama: string; level: number; batas_poin: number } | null;
+};
+
+export type PoinSiswa = {
+  siswa: { id: number; nis: string; nama: string };
+  tahun_ajaran: string;
+  total_poin: number;
+  total_pelanggaran: number;
+  total_remisi: number;
+  sp: SpSiswa[];
+  riwayat: CatatanPoin[];
+  remisi: CatatanPoin[];
+};
+
+export type KontakWali = {
+  siswa: { id: number; nis: string; nama: string; kelas: string | null };
+  wali: { nama: string | null; hubungan: string | null; no_hp: string | null };
+  ada_nomor_wali: boolean;
+  wa_link: string | null;
+  riwayat: { id: number; tujuan: string; catatan: string | null; oleh: string | null; waktu: string }[];
+};

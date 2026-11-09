@@ -47,3 +47,14 @@ export function susunKalender(bulan: string) {
     hari: Array.from({ length: jumlah }, (_, i) => keIso(new Date(y, m - 1, i + 1))),
   };
 }
+
+// "2026-11-09 08:15:00" -> "9 Nov 2026, 08.15"
+export function labelWaktu(s: string): string {
+  return new Intl.DateTimeFormat("id-ID", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  }).format(new Date(s.replace(" ", "T")));
+}
