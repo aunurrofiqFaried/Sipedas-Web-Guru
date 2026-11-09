@@ -176,6 +176,7 @@ export type JadwalMinggu = {
 export type JadwalSaya = {
   tahun_ajaran: { nama: string; tanggal_mulai: string; tanggal_selesai: string };
   data: JadwalMinggu[];
+  piket?: PiketMinggu[];
 };
 
 export type Acara = {
@@ -226,4 +227,30 @@ export type KontakWali = {
   ada_nomor_wali: boolean;
   wa_link: string | null;
   riwayat: { id: number; tujuan: string; catatan: string | null; oleh: string | null; waktu: string }[];
+};
+
+export type PiketMinggu = {
+  id: number;
+  hari: number;
+  jam_ke_mulai: number;
+  jam_ke_selesai: number;
+  jam_mulai: string;
+  jam_selesai: string;
+  tugas: string | null;
+};
+
+export type Pengumuman = {
+  id: number;
+  judul: string;
+  isi: string;
+  tingkat: "biasa" | "penting";
+  tanggal: string;
+  berlaku_sampai: string | null;
+  pembuat: string | null;
+};
+
+export type PengumumanResponse = {
+  belum_dibaca: number;
+  terakhir_dibaca_id: number;
+  data: Pengumuman[];
 };

@@ -58,3 +58,27 @@ export function labelWaktu(s: string): string {
     minute: "2-digit",
   }).format(new Date(s.replace(" ", "T")));
 }
+
+// "Senin, 3 Nov"
+export function labelHariBulan(iso: string): string {
+  return new Intl.DateTimeFormat("id-ID", { weekday: "long", day: "numeric", month: "short" }).format(dariIso(iso));
+}
+
+// Pecah satu bulan menjadi minggu-minggu (Senin sampai Minggu), hanya hari yang masuk bulan itu
+export function mingguDalamBulan(bulan: string): string[][] {
+  const { hari } = susunKalender(bulan);
+  const minggu: string[][] = [];
+  let sekarang: string[] = [];
+
+  for (const iso of hari) {
+    if (hariIso(dariIso(iso)) === 1 && sekarang.length > 0) {
+      minggu.push(sekarang);
+      sekarang = [];
+    }
+    sekarang.push(iso);
+  }
+
+  if (sekarang.length > 0) minggu.push(sekarang);
+
+  return minggu;
+}
