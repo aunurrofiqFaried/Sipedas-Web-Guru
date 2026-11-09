@@ -2,24 +2,31 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
 import {
-  ClipboardCheck,
+  Bell,
   BookOpen,
+  CalendarDays,
+  ClipboardCheck,
   House,
   LogOut,
   Table2,
   TriangleAlert,
   UserRound,
 } from "lucide-react";
+import { api } from "@/lib/api-client";
 import type { User } from "@/lib/session";
+import type { PengumumanResponse } from "@/lib/types";
 
 const menu = [
-  { href: "/", label: "Beranda", icon: House, mobile: true },
-  { href: "/absensi", label: "Absensi", icon: ClipboardCheck, mobile: true },
-  { href: "/jurnal", label: "Jurnal", icon: BookOpen, mobile: true },
-  { href: "/poin", label: "Poin", icon: TriangleAlert, mobile: true },
-  { href: "/rekap", label: "Rekap", icon: Table2, mobile: false },
-  { href: "/profil", label: "Profil", icon: UserRound, mobile: true },
+  { href: "/", label: "Beranda", icon: House, mobile: true, badge: false },
+  { href: "/absensi", label: "Absensi", icon: ClipboardCheck, mobile: true, badge: false },
+  { href: "/jurnal", label: "Jurnal", icon: BookOpen, mobile: true, badge: false },
+  { href: "/poin", label: "Poin", icon: TriangleAlert, mobile: true, badge: false },
+  { href: "/rekap", label: "Rekap", icon: Table2, mobile: false, badge: false },
+  { href: "/kalender", label: "Kalender", icon: CalendarDays, mobile: false, badge: false },
+  { href: "/pengumuman", label: "Pengumuman", icon: Bell, mobile: false, badge: true },
+  { href: "/profil", label: "Profil", icon: UserRound, mobile: true, badge: false },
 ];
 
 const labelRole: Record<string, string> = {
@@ -34,6 +41,16 @@ const labelRole: Record<string, string> = {
 export default function Shell({ user, children }: { user: User; children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
+
+  // Pengganti notifikasi push: diperiksa ulang setiap menit selama tab terbuka
+  const pengumuman = useQuery({
+    queryKey: ["pengumuman"],
+    queryFn: () => api<PengumumanResponse>("pengumuman"),
+    refetchInterval: 60_000,
+  });
+
+  const belum = pengumuman.data?.belum_dibaca ?? 0;
+  const teksBelum = belum > 9 ? "9+" : String(belum);
 
   const aktif = (href: string) => (href === "/" ? pathname === "/" : pathname.startsWith(href));
 
@@ -53,7 +70,7 @@ export default function Shell({ user, children }: { user: User; children: React.
         </div>
 
         <nav className="flex flex-1 flex-col gap-1">
-          {menu.map(({ href, label, icon: Ikon }) => (
+          {menu.map(({ href, label, icon: Ikon, badge }) => (
             <Link
               key={href}
               href={href}
@@ -63,6 +80,11 @@ export default function Shell({ user, children }: { user: User; children: React.
             >
               <Ikon className="size-5" />
               {label}
+              {badge && belum > 0 && (
+                <span className="ml-auto flex h-5 min-w-5 items-center justify-center rounded-full bg-red-600 px-1.5 text-[11px] font-bold text-white">
+                  {teksBelum}
+                </span>
+              )}
             </Link>
           ))}
         </nav>
@@ -86,6 +108,24 @@ export default function Shell({ user, children }: { user: User; children: React.
       {/* Isi halaman */}
       <div className="md:pl-64">
         <div className="mx-auto max-w-5xl px-4 pb-[calc(7rem+env(safe-area-inset-bottom))] pt-[calc(1rem+env(safe-area-inset-top))] md:px-8 md:pb-10 md:pt-8">
+          {/* Bilah atas: HP */}
+          <div className="mb-4 flex items-center justify-between md:hidden">
+            <p className="text-xl font-bold text-orange-600">Sipedas</p>
+
+            <Link
+              href="/pengumuman"
+              aria-label="Pengumuman"
+              className="relative rounded-full p-2 text-orange-600 active:bg-orange-100"
+            >
+              <Bell className="size-6" />
+              {belum > 0 && (
+                <span className="absolute -right-0.5 -top-0.5 flex h-5 min-w-5 items-center justify-center rounded-full border-2 border-white bg-red-600 px-1 text-[10px] font-bold text-white">
+                  {teksBelum}
+                </span>
+              )}
+            </Link>
+          </div>
+
           {children}
         </div>
       </div>

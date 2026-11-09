@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
-import { BookText, Clock, School, Users } from "lucide-react";
+import { BookText, Clock, School, Users, Table2, CalendarDays, Bell } from "lucide-react";
 import { api } from "@/lib/api-client";
 import type { JadwalHariIni, Statistik } from "@/lib/types";
 
@@ -238,6 +238,26 @@ export default function Beranda() {
           </div>
         </section>
       )}
+            {/* Menu lainnya: tampil di HP, karena menu bawah hanya memuat lima menu */}
+      <section className="md:hidden">
+        <h2 className="mb-3 text-lg font-semibold">Menu lainnya</h2>
+        <div className="grid grid-cols-3 gap-3">
+          {[
+            { href: "/rekap", label: "Rekap", ikon: <Table2 className="size-6" /> },
+            { href: "/kalender", label: "Kalender", ikon: <CalendarDays className="size-6" /> },
+            { href: "/pengumuman", label: "Pengumuman", ikon: <Bell className="size-6" /> },
+          ].map((m) => (
+            <Link
+              key={m.href}
+              href={m.href}
+              className="flex flex-col items-center gap-2 rounded-3xl border border-white/80 bg-white/70 py-4 text-sm font-medium text-orange-700 backdrop-blur"
+            >
+              {m.ikon}
+              {m.label}
+            </Link>
+          ))}
+        </div>
+      </section>
     </div>
   );
 }
