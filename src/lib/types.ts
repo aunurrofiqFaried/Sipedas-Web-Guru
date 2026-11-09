@@ -63,3 +63,36 @@ export type Statistik = {
   kelas_wali: KelasWali[];
   pelanggaran_dicatat: number;
 };
+
+export type StatusAbsen = "hadir" | "sakit" | "izin" | "alpa";
+
+export type KelasAbsen = {
+  id: number;
+  nama: string;
+  alasan: "wali" | "jadwal" | "pengganti" | "admin" | null;
+  jumlah_siswa: number;
+  sudah_diabsen: number;
+};
+
+export type KelasHariIni = {
+  tanggal: string;
+  libur?: Libur | null;
+  data: KelasAbsen[];
+};
+
+export type SiswaAbsen = {
+  id: number;
+  nis: string;
+  nama: string;
+  jenis_kelamin: string | null;
+  status: StatusAbsen | null;
+  keterangan: string | null;
+  ada_nomor_wali: boolean;
+  wa_link: string | null;
+};
+
+export type SiswaKelas = {
+  tanggal: string;
+  kelas: IdNama;
+  data: SiswaAbsen[];
+};

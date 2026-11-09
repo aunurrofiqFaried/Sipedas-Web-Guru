@@ -1,5 +1,5 @@
-import Segera from "@/components/segera";
+import DaftarKelas from "./daftar-kelas";
 
 export default function Page() {
-  return <Segera judul="Absensi" keterangan="Input absensi harian dan sholat, serta rekap per kelas." />;
+  return <DaftarKelas />;
 }
