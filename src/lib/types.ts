@@ -144,3 +144,45 @@ export type RekapAbsensi = {
   total: { hadir: number; sakit: number; izin: number; alpa: number };
   siswa: RekapSiswa[];
 };
+
+export type JurnalItem = {
+  id: number;
+  jadwal_id: number;
+  tanggal: string;
+  materi: string;
+  catatan: string | null;
+  kelas: IdNama | null;
+  mapel: IdNama | null;
+  jam_ke_mulai: number | null;
+  jam_ke_selesai: number | null;
+  jam_mulai: string | null;
+  jam_selesai: string | null;
+};
+
+export type JurnalBulan = { bulan: string; data: JurnalItem[] };
+
+export type JadwalMinggu = {
+  id: number;
+  hari: number;
+  kelas: IdNama | null;
+  mapel: IdNama | null;
+  ruang: Ruang | null;
+  jam_ke_mulai: number;
+  jam_ke_selesai: number;
+  jam_mulai: string;
+  jam_selesai: string;
+};
+
+export type JadwalSaya = {
+  tahun_ajaran: { nama: string; tanggal_mulai: string; tanggal_selesai: string };
+  data: JadwalMinggu[];
+};
+
+export type Acara = {
+  id: number;
+  judul: string;
+  jenis: "libur" | "peringatan";
+  tanggal_mulai: string;
+  tanggal_selesai: string;
+  keterangan: string | null;
+};

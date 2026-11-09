@@ -1,5 +1,5 @@
-import Segera from "@/components/segera";
+import JurnalHalaman from "./jurnal-halaman";
 
 export default function Page() {
-  return <Segera judul="Jurnal" keterangan="Isi jurnal, riwayat, dan rekap per periode." />;
+  return <JurnalHalaman />;
 }
