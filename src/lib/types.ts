@@ -96,3 +96,51 @@ export type SiswaKelas = {
   kelas: IdNama;
   data: SiswaAbsen[];
 };
+
+export type StatusSholat = "hadir" | "tidak_hadir" | "berhalangan";
+
+export type KelasSholat = {
+  id: number;
+  nama: string;
+  jumlah_peserta: number;
+  absensi_harian_siap: boolean;
+  dhuhur: number;
+  ashar: number;
+};
+
+export type SiswaSholat = {
+  id: number;
+  nis: string;
+  nama: string;
+  jenis_kelamin: string | null;
+  status_harian: StatusAbsen | null;
+  terkunci: boolean;
+  status: StatusSholat | null;
+};
+
+export type SholatSiswaResponse = {
+  tanggal: string;
+  waktu: string;
+  kelas: IdNama;
+  data: SiswaSholat[];
+};
+
+export type KelasRekap = { id: number; nama: string; jumlah_siswa: number };
+
+export type RekapSiswa = {
+  id: number;
+  nis: string;
+  nama: string;
+  hadir: number;
+  sakit: number;
+  izin: number;
+  alpa: number;
+};
+
+export type RekapAbsensi = {
+  kelas: IdNama;
+  periode: { label: string; dari: string; sampai: string };
+  hari_tercatat: number;
+  total: { hadir: number; sakit: number; izin: number; alpa: number };
+  siswa: RekapSiswa[];
+};

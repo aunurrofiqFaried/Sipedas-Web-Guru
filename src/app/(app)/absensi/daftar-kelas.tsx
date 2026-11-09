@@ -12,7 +12,7 @@ const keteranganAlasan: Record<string, string> = {
   admin: "Akses admin",
 };
 
-export default function DaftarKelas() {
+export default function DaftarKelas({ waliKelas }: { waliKelas: boolean }) {
   const q = useQuery({
     queryKey: ["absensi-kelas"],
     queryFn: () => api<KelasHariIni>("absensi/kelas-hari-ini"),
@@ -57,6 +57,26 @@ export default function DaftarKelas() {
           {q.data.libur.keterangan && <p className="mt-1 text-sm">{q.data.libur.keterangan}</p>}
         </div>
       )}
+
+      <div className="grid gap-3 md:grid-cols-2">
+        {waliKelas && (
+          <Link
+            href="/absensi/sholat"
+            className="rounded-3xl border border-white/80 bg-white/70 p-5 shadow-sm backdrop-blur transition-shadow hover:shadow-md"
+          >
+            <p className="text-xl font-bold">Absensi sholat</p>
+            <p className="text-sm text-gray-500">Dhuhur dan Ashar · khusus wali kelas</p>
+          </Link>
+        )}
+
+        <Link
+          href="/rekap/absensi"
+          className="rounded-3xl border border-white/80 bg-white/70 p-5 shadow-sm backdrop-blur transition-shadow hover:shadow-md"
+        >
+          <p className="text-xl font-bold">Rekap kehadiran kelas</p>
+          <p className="text-sm text-gray-500">Jumlah hadir, sakit, izin, dan alpa tiap siswa</p>
+        </Link>
+      </div>
 
       <section className="space-y-3">
         <h2 className="text-lg font-semibold">Wajib Anda absen</h2>
