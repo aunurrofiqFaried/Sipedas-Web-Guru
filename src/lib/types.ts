@@ -254,3 +254,29 @@ export type PengumumanResponse = {
   terakhir_dibaca_id: number;
   data: Pengumuman[];
 };
+
+export type BarisJurnal = {
+  id: number;
+  tanggal: string;
+  hari: string;
+  tanggal_label: string;
+  kelas: string | null;
+  konsentrasi: string | null;
+  jam_ke_mulai: number | null;
+  jam_ke_selesai: number | null;
+  jumlah_siswa: number;
+  hadir: number | null;
+  tidak_hadir: number | null;
+  nama_tidak_hadir: string[];
+  materi: string;
+  catatan: string | null;
+};
+
+export type RekapJurnal = {
+  guru: { nama: string; nip: string | null };
+  mapel: IdNama;
+  kelas: IdNama | null;
+  periode: { dari: string; sampai: string; label: string };
+  ringkasan: { pertemuan: number; jam_pelajaran: number; rata_kehadiran: number | null };
+  baris: BarisJurnal[];
+};

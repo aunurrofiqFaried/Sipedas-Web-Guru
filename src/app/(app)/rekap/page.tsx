@@ -2,7 +2,7 @@ import Link from "next/link";
 
 const menu = [
   { href: "/rekap/absensi", judul: "Rekap kehadiran kelas", ket: "Hadir, sakit, izin, dan alpa tiap siswa per bulan", aktif: true },
-  { href: "#", judul: "Rekap jurnal", ket: "Jurnal per guru, kelas, dan periode", aktif: false },
+  { href: "/rekap/jurnal", judul: "Rekap jurnal", ket: "Jurnal per mapel, kelas, dan periode dengan PDF resmi", aktif: true },
   { href: "#", judul: "Rekap poin pelanggaran", ket: "Poin dan remisi per kelas atau siswa", aktif: false },
   { href: "#", judul: "Rekap sholat", ket: "Kehadiran sholat per kelas", aktif: false },
 ];
