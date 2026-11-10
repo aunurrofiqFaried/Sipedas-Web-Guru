@@ -155,11 +155,22 @@ export default function RekapAbsensi() {
 
       {rekap.data && (
         <>
-          <div>
-            <p className="font-semibold">
-              {rekap.data.kelas.nama} · {rekap.data.periode.label}
-            </p>
-            <p className="text-sm text-gray-500">Absensi tercatat pada {rekap.data.hari_tercatat} hari</p>
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <p className="font-semibold">
+                {rekap.data.kelas.nama} · {rekap.data.periode.label}
+              </p>
+              <p className="text-sm text-gray-500">Absensi tercatat pada {rekap.data.hari_tercatat} hari</p>
+            </div>
+
+            <a
+              href={`/api/proxy/rekap/absensi/pdf?kelas_id=${kelasId}&bulan=${parameter}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-2xl bg-orange-600 px-5 py-2.5 text-sm font-semibold text-white"
+            >
+              Unduh PDF
+            </a>
           </div>
 
           <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
