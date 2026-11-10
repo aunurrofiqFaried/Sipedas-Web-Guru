@@ -304,3 +304,35 @@ export type RekapDaftarHadir = {
   siswa: BarisHadir[];
   ringkasan: { pertemuan: number; jumlah_siswa: number; rata_kehadiran: number | null };
 };
+
+export type BarisPoin = {
+  id: number;
+  nis: string;
+  nama: string;
+  kejadian: number;
+  poin_pelanggaran: number;
+  remisi: number;
+  poin_aktif: number;
+  level: number;
+  sp: { nama: string; level: number; status: string } | null;
+};
+
+export type RekapPoin = {
+  kelas: { id: number; nama: string };
+  wali: { nama: string; nip: string | null } | null;
+  tahun_ajaran: string;
+  periode: { dari: string; sampai: string; label: string };
+  aturan: { level: number; nama: string; batas_poin: number }[];
+  ringkasan: {
+    jumlah_siswa: number;
+    kejadian: number;
+    poin_pelanggaran: number;
+    remisi: number;
+    siswa_bermasalah: number;
+    siswa_sp: number;
+  };
+  kategori: { kategori: string; jumlah: number; poin: number }[];
+  jenis_terbanyak: { nama: string; jumlah: number; poin: number }[];
+  per_bulan: { label: string; jumlah: number; poin: number }[];
+  siswa: BarisPoin[];
+};

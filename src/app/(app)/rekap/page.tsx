@@ -4,7 +4,7 @@ const menu = [
   { href: "/rekap/absensi", judul: "Rekap kehadiran kelas", ket: "Hadir, sakit, izin, dan alpa tiap siswa per bulan", aktif: true },
   { href: "/rekap/jurnal", judul: "Rekap jurnal", ket: "Jurnal per mapel, kelas, dan periode dengan PDF resmi", aktif: true },
   { href: "/rekap/daftar-hadir", judul: "Daftar hadir", ket: "Daftar hadir siswa per mapel dan kelas, siap cetak PDF", aktif: true },
-  { href: "#", judul: "Rekap poin pelanggaran", ket: "Poin dan remisi per kelas atau siswa", aktif: false },
+  { href: "/rekap/poin", judul: "Rekap poin pelanggaran", ket: "Poin, remisi, dan status SP per kelas dengan grafik dan PDF", aktif: true },
   { href: "#", judul: "Rekap sholat", ket: "Kehadiran sholat per kelas", aktif: false },
 ];
 
