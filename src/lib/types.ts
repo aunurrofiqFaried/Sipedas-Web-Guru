@@ -336,3 +336,35 @@ export type RekapPoin = {
   per_bulan: { label: string; jumlah: number; poin: number }[];
   siswa: BarisPoin[];
 };
+
+export type SholatHitung = { hadir: number; tidak_hadir: number; berhalangan: number };
+
+export type BarisSholat = {
+  id: number;
+  nis: string;
+  nama: string;
+  jk: string | null;
+  dhuhur: SholatHitung;
+  ashar: SholatHitung;
+  hadir: number;
+  wajib: number;
+  persen: number | null;
+};
+
+export type RekapSholat = {
+  kelas: { id: number; nama: string };
+  wali: { nama: string; nip: string | null } | null;
+  tahun_ajaran: string;
+  periode: { dari: string; sampai: string; label: string };
+  ringkasan: {
+    peserta: number;
+    hari_tercatat: number;
+    persen: number | null;
+    persen_dhuhur: number | null;
+    persen_ashar: number | null;
+  };
+  waktu: { dhuhur: SholatHitung; ashar: SholatHitung };
+  per_bulan: { label: string; hadir: number; tidak_hadir: number; persen: number | null }[];
+  terbanyak_tidak_hadir: { nama: string; jumlah: number }[];
+  siswa: BarisSholat[];
+};
