@@ -368,3 +368,155 @@ export type RekapSholat = {
   terbanyak_tidak_hadir: { nama: string; jumlah: number }[];
   siswa: BarisSholat[];
 };
+
+export type GuruKepatuhan = {
+  id: number;
+  nama: string;
+  nip: string | null;
+  sesi_per_minggu: number;
+  seharusnya: number;
+  terisi: number;
+  terlewat: number;
+  persen: number | null;
+  status: "baik" | "cukup" | "kurang" | null;
+  terakhir_isi: string | null;
+};
+
+export type KepatuhanJurnal = {
+  periode: { dari: string; sampai: string; dihitung_sampai: string; label: string };
+  ringkasan: {
+    guru: number;
+    hari_efektif: number;
+    seharusnya: number;
+    terisi: number;
+    terlewat: number;
+    persen: number | null;
+    baik: number;
+    cukup: number;
+    kurang: number;
+  };
+  mingguan: { label: string; seharusnya: number; terisi: number; persen: number | null }[];
+  guru: GuruKepatuhan[];
+};
+
+export type SesiTerlewat = {
+  tanggal: string;
+  hari: string;
+  tanggal_label: string;
+  kelas: string | null;
+  mapel: string | null;
+  jam_ke_mulai: number;
+  jam_ke_selesai: number;
+  jam_mulai: string;
+  jam_selesai: string;
+};
+
+export type DetailKepatuhan = {
+  guru: { id: number; nama: string; nip: string | null };
+  periode: { dari: string; sampai: string; dihitung_sampai: string; label: string };
+  ringkasan: Omit<GuruKepatuhan, "id" | "nama" | "nip">;
+  terlewat: SesiTerlewat[];
+};
+
+export type SholatRingkas = {
+  hadir: number;
+  tidak_hadir: number;
+  berhalangan: number;
+  persen: number | null;
+  kelas: number;
+};
+
+export type DashboardPimpinanData = {
+  diperbarui: string;
+  hari: { tanggal: string; label: string; hari_ini: boolean; libur: string | null };
+  ringkasan: {
+    siswa: number;
+    kelas: number;
+    guru_mengajar: number;
+    pelanggaran_bulan: { jumlah: number; poin: number; jumlah_lalu: number; poin_lalu: number };
+    sp_menunggu: number;
+    mendekati_sp: number;
+  };
+  absensi: {
+    total_siswa: number;
+    tercatat: number;
+    hadir: number;
+    sakit: number;
+    izin: number;
+    alpa: number;
+    belum: number;
+    persen: number | null;
+    kelas_total: number;
+    kelas_diabsen: number;
+  };
+  tren_absensi: {
+    tanggal: string;
+    label: string;
+    persen: number | null;
+    hadir: number;
+    sakit: number;
+    izin: number;
+    alpa: number;
+    total: number;
+  }[];
+  peta_panas: {
+    tanggal: string[];
+    kelas: { id: number; nama: string; jurusan: string; nilai: (number | null)[] }[];
+  };
+  kelas_belum: { id: number; nama: string; jurusan: string; siswa: number }[];
+  kelas_terendah: {
+    id: number;
+    nama: string;
+    jurusan: string;
+    siswa: number;
+    persen: number | null;
+    hadir: number;
+    tercatat: number;
+  }[];
+  sholat: { dhuhur: SholatRingkas; ashar: SholatRingkas; kelas_total: number };
+  jurnal_hari: {
+    total: number;
+    terisi: number;
+    terlewat: number;
+    berjalan: number;
+    persen: number | null;
+    daftar_terlewat: {
+      guru: string;
+      kelas: string | null;
+      mapel: string | null;
+      jam_ke_mulai: number;
+      jam_ke_selesai: number;
+      jam_mulai: string;
+      jam_selesai: string;
+    }[];
+  };
+  kepatuhan: {
+    ringkasan: KepatuhanJurnal["ringkasan"];
+    mingguan: KepatuhanJurnal["mingguan"];
+    terendah: GuruKepatuhan[];
+  };
+  pelanggaran: {
+    mingguan: { label: string; jumlah: number }[];
+    jenis_teratas: { nama: string; jumlah: number; poin: number }[];
+  };
+  sp: {
+    menunggu: { siswa: string; kelas: string; aturan: string; poin: number; tanggal: string }[];
+    mendekati: { nama: string; kelas: string; poin_aktif: number; sisa: number; menuju: string }[];
+    poin_tertinggi: { nama: string; kelas: string; poin_aktif: number }[];
+  };
+  jurusan: {
+    nama: string;
+    kelas: number;
+    siswa: number;
+    hadir: number;
+    tercatat: number;
+    persen: number | null;
+    pelanggaran_bulan: number;
+  }[];
+  peringatan: {
+    tingkat: "danger" | "warn" | "info" | "ok";
+    judul: string;
+    detail: string | null;
+    tautan: string | null;
+  }[];
+};

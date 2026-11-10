@@ -6,6 +6,8 @@ const labelRole: Record<string, string> = {
   guru_bk: "Guru BK",
   kesiswaan: "Waka Kesiswaan",
   kepala_sekolah: "Kepala Sekolah",
+  waka_kurikulum: "Waka Kurikulum",
+  waka_sdm: "Waka SDM",
   staf: "Staf",
 };
 

@@ -13,13 +13,16 @@ import {
   Table2,
   TriangleAlert,
   UserRound,
+  LayoutDashboard,
 } from "lucide-react";
 import { api } from "@/lib/api-client";
 import type { User } from "@/lib/session";
 import type { PengumumanResponse } from "@/lib/types";
+import { PERAN_PIMPINAN } from "@/lib/peran";
 
-const menu = [
+const menu: { href: string; label: string; icon: React.ComponentType<{ className?: string }>; mobile: boolean; badge: boolean; khusus?: "pimpinan" }[] = [
   { href: "/", label: "Beranda", icon: House, mobile: true, badge: false },
+  { href: "/pimpinan", label: "Pimpinan", icon: LayoutDashboard, mobile: false, badge: false, khusus: "pimpinan" },
   { href: "/absensi", label: "Absensi", icon: ClipboardCheck, mobile: true, badge: false },
   { href: "/jurnal", label: "Jurnal", icon: BookOpen, mobile: true, badge: false },
   { href: "/poin", label: "Poin", icon: TriangleAlert, mobile: true, badge: false },
@@ -35,12 +38,15 @@ const labelRole: Record<string, string> = {
   guru_bk: "Guru BK",
   kesiswaan: "Waka Kesiswaan",
   kepala_sekolah: "Kepala Sekolah",
+  waka_kurikulum: "Waka Kurikulum",
+  waka_sdm: "Waka SDM",
   staf: "Staf",
 };
 
 export default function Shell({ user, children }: { user: User; children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
+  const daftarMenu = menu.filter((m) => !m.khusus || PERAN_PIMPINAN.includes(user.role));
 
   // Pengganti notifikasi push: diperiksa ulang setiap menit selama tab terbuka
   const pengumuman = useQuery({
@@ -70,7 +76,7 @@ export default function Shell({ user, children }: { user: User; children: React.
         </div>
 
         <nav className="flex flex-1 flex-col gap-1">
-          {menu.map(({ href, label, icon: Ikon, badge }) => (
+          {daftarMenu.map(({ href, label, icon: Ikon, badge }) => (
             <Link
               key={href}
               href={href}
@@ -107,7 +113,11 @@ export default function Shell({ user, children }: { user: User; children: React.
 
       {/* Isi halaman */}
       <div className="md:pl-64">
-        <div className="mx-auto max-w-5xl px-4 pb-[calc(7rem+env(safe-area-inset-bottom))] pt-[calc(1rem+env(safe-area-inset-top))] md:px-8 md:pb-10 md:pt-8">
+        <div
+          className={`mx-auto px-4 pb-[calc(7rem+env(safe-area-inset-bottom))] pt-[calc(1rem+env(safe-area-inset-top))] md:pb-10 md:pt-8 ${
+            pathname === "/pimpinan" ? "max-w-none md:px-6" : "max-w-5xl md:px-8"
+          }`}
+        >
           {/* Bilah atas: HP */}
           <div className="mb-4 flex items-center justify-between md:hidden">
             <p className="text-xl font-bold text-orange-600">Sipedas</p>
@@ -132,7 +142,7 @@ export default function Shell({ user, children }: { user: User; children: React.
 
       {/* Menu bawah: HP */}
       <nav className="fixed inset-x-4 bottom-[calc(0.75rem+env(safe-area-inset-bottom))] z-20 flex gap-1 rounded-[1.75rem] border border-white/90 bg-white/85 p-1.5 shadow-xl shadow-black/10 backdrop-blur-xl md:hidden">
-        {menu
+        {daftarMenu
           .filter((m) => m.mobile)
           .map(({ href, label, icon: Ikon }) => (
             <Link
