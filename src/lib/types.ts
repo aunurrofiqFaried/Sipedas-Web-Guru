@@ -280,3 +280,27 @@ export type RekapJurnal = {
   ringkasan: { pertemuan: number; jam_pelajaran: number; rata_kehadiran: number | null };
   baris: BarisJurnal[];
 };
+
+export type KolomHadir = { tanggal: string; label: string; hadir: number; tidak_hadir: number };
+
+export type BarisHadir = {
+  id: number;
+  nama: string;
+  jk: string | null;
+  status: string[]; // "H", "S", "I", "A", atau "" (belum diabsen)
+  hadir: number;
+  sakit: number;
+  izin: number;
+  alpa: number;
+};
+
+export type RekapDaftarHadir = {
+  guru: { nama: string; nip: string | null };
+  mapel: IdNama;
+  kelas: { id: number; nama: string; konsentrasi: string | null };
+  periode: { dari: string; sampai: string; label: string };
+  semester: string;
+  kolom: KolomHadir[];
+  siswa: BarisHadir[];
+  ringkasan: { pertemuan: number; jumlah_siswa: number; rata_kehadiran: number | null };
+};
