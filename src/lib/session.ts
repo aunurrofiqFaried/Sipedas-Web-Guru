@@ -9,6 +9,8 @@ export type User = {
   username: string;
   nip: string | null;
   role: string;
+  roles: string[];
+  kaprodi_jurusan: { id: number; kode: string; nama: string } | null;
   is_wali_kelas: boolean;
 };
 

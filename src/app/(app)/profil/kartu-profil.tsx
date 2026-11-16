@@ -1,15 +1,7 @@
 import type { User } from "@/lib/session";
+import { labelPeran } from "@/lib/peran";
 
-const labelRole: Record<string, string> = {
-  admin: "Admin",
-  guru: "Guru",
-  guru_bk: "Guru BK",
-  kesiswaan: "Waka Kesiswaan",
-  kepala_sekolah: "Kepala Sekolah",
-  waka_kurikulum: "Waka Kurikulum",
-  waka_sdm: "Waka SDM",
-  staf: "Staf",
-};
+
 
 export default function KartuProfil({ user }: { user: User }) {
   const inisial =
@@ -33,7 +25,11 @@ export default function KartuProfil({ user }: { user: User }) {
 
           <div className="mt-2 flex flex-wrap gap-2">
             <span className="rounded-full bg-orange-100 px-3 py-1 text-xs font-semibold text-orange-800">
-              {labelRole[user.role] ?? user.role}
+              {labelPeran(user).map((l) => (
+              <span key={l} className="rounded-full bg-orange-100 px-3 py-1 text-xs font-semibold text-orange-800">
+                {l}
+              </span>
+            ))}
             </span>
             {user.is_wali_kelas && (
               <span className="rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-800">

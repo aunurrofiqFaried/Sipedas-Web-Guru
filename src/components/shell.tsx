@@ -19,6 +19,7 @@ import { api } from "@/lib/api-client";
 import type { User } from "@/lib/session";
 import type { PengumumanResponse } from "@/lib/types";
 import { PERAN_PIMPINAN } from "@/lib/peran";
+import { adalahPimpinan, bolehPantau, labelPeran } from "@/lib/peran";
 
 const menu: { href: string; label: string; icon: React.ComponentType<{ className?: string }>; mobile: boolean; badge: boolean; khusus?: "pimpinan" }[] = [
   { href: "/", label: "Beranda", icon: House, mobile: true, badge: false },
@@ -32,21 +33,13 @@ const menu: { href: string; label: string; icon: React.ComponentType<{ className
   { href: "/profil", label: "Profil", icon: UserRound, mobile: true, badge: false },
 ];
 
-const labelRole: Record<string, string> = {
-  admin: "Admin",
-  guru: "Guru",
-  guru_bk: "Guru BK",
-  kesiswaan: "Waka Kesiswaan",
-  kepala_sekolah: "Kepala Sekolah",
-  waka_kurikulum: "Waka Kurikulum",
-  waka_sdm: "Waka SDM",
-  staf: "Staf",
-};
 
 export default function Shell({ user, children }: { user: User; children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
-  const daftarMenu = menu.filter((m) => !m.khusus || PERAN_PIMPINAN.includes(user.role));
+    const daftarMenu = menu
+    .filter((m) => !m.khusus || bolehPantau(user))
+    .map((m) => (m.khusus === "pimpinan" && !adalahPimpinan(user) ? { ...m, label: "Kaprodi" } : m));
 
   // Pengganti notifikasi push: diperiksa ulang setiap menit selama tab terbuka
   const pengumuman = useQuery({
@@ -98,7 +91,7 @@ export default function Shell({ user, children }: { user: User; children: React.
         <div className="rounded-2xl border border-white/80 bg-white/80 p-3">
           <p className="truncate text-sm font-semibold">{user.name}</p>
           <p className="truncate text-xs text-gray-500">
-            {labelRole[user.role] ?? user.role}
+            {labelPeran(user).join(" · ")}
             {user.is_wali_kelas ? " · wali kelas" : ""}
           </p>
           <button
