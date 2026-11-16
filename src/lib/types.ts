@@ -683,3 +683,68 @@ export type DetailKehadiranKelas = {
   };
   siswa: SiswaKehadiran[];
 };
+
+// ---------- Jadwal sekolah (pimpinan) ----------
+export type JamSekolah = { jam_ke: number; jam_mulai: string; jam_selesai: string };
+
+export type SesiSekolah = {
+  id: number;
+  jam_ke_mulai: number;
+  jam_ke_selesai: number;
+  jam_mulai: string;
+  jam_selesai: string;
+  kelas: string | null;
+  mapel: string | null;
+  guru: string | null;
+  guru_id: number;
+  ruang: string | null;
+  berlangsung?: boolean;
+};
+
+export type PiketSekolah = {
+  hari: number;
+  hari_label: string;
+  jam_ke_mulai: number;
+  jam_ke_selesai: number;
+  jam_mulai: string;
+  jam_selesai: string;
+  tugas: string | null;
+  guru?: string | null;
+};
+
+export type HariSekolah = { hari: number; label: string; jam: number; sesi: SesiSekolah[] };
+
+export type PilihanJadwalSekolah = {
+  jam: JamSekolah[];
+  hari: { hari: number; label: string }[];
+  hari_ini: number;
+  kelas: { id: number; nama: string; jurusan: string }[];
+  guru: { id: number; nama: string; nip: string | null }[];
+};
+
+export type JadwalIndukHari = {
+  hari: number;
+  label: string;
+  hari_ini: boolean;
+  libur: string | null;
+  jam_sekarang: string | null;
+  jam: JamSekolah[];
+  ringkasan: { sesi: number; jam: number; mapel: number; kelas: number; guru: number };
+  kelas: { id: number; nama: string; jurusan: string; sesi: SesiSekolah[] }[];
+  piket: PiketSekolah[];
+};
+
+export type JadwalMingguKelas = {
+  kelas: { id: number; nama: string; jurusan: string | null; wali_kelas: string | null };
+  jam: JamSekolah[];
+  ringkasan: { sesi: number; jam: number; mapel: number };
+  hari: HariSekolah[];
+};
+
+export type JadwalMingguGuru = {
+  guru: { id: number; nama: string; nip: string | null };
+  jam: JamSekolah[];
+  ringkasan: { sesi: number; jam: number; mapel: number };
+  hari: HariSekolah[];
+  piket: PiketSekolah[];
+};
