@@ -598,3 +598,88 @@ export type DetailDataGuru = {
     }[];
   };
 };
+
+// ---------- Absensi dan sholat semua kelas (pimpinan) ----------
+export type HitungSholatKelas = {
+  tercatat: number;
+  hadir: number;
+  tidak_hadir: number;
+  berhalangan: number;
+  persen: number | null;
+};
+
+export type KelasKehadiran = {
+  id: number;
+  nama: string;
+  jurusan: string;
+  wali_kelas: string | null;
+  siswa: number;
+  absensi: {
+    tercatat: number;
+    hadir: number;
+    sakit: number;
+    izin: number;
+    alpa: number;
+    persen: number | null;
+    status: "belum" | "sebagian" | "lengkap";
+    diabsen_oleh: string | null;
+  };
+  sholat: { peserta: number; dhuhur: HitungSholatKelas; ashar: HitungSholatKelas };
+};
+
+export type RingkasSholatSekolah = {
+  hadir: number;
+  tidak_hadir: number;
+  berhalangan: number;
+  persen: number | null;
+  kelas: number;
+};
+
+export type KehadiranSekolah = {
+  tanggal: string;
+  label: string;
+  hari_ini: boolean;
+  libur: string | null;
+  ringkasan: {
+    kelas: number;
+    siswa: number;
+    tercatat: number;
+    hadir: number;
+    sakit: number;
+    izin: number;
+    alpa: number;
+    belum: number;
+    persen: number | null;
+    kelas_lengkap: number;
+    kelas_sebagian: number;
+    kelas_belum: number;
+  };
+  sholat: { peserta: number; dhuhur: RingkasSholatSekolah; ashar: RingkasSholatSekolah };
+  kelas: KelasKehadiran[];
+};
+
+export type SiswaKehadiran = {
+  id: number;
+  nis: string | null;
+  nama: string;
+  jk: string | null;
+  status: "hadir" | "sakit" | "izin" | "alpa" | null;
+  keterangan: string | null;
+  ikut_sholat: boolean;
+  dhuhur: "hadir" | "tidak_hadir" | "berhalangan" | null;
+  ashar: "hadir" | "tidak_hadir" | "berhalangan" | null;
+};
+
+export type DetailKehadiranKelas = {
+  tanggal: string;
+  label: string;
+  libur: string | null;
+  kelas: { id: number; nama: string; wali_kelas: string | null; siswa: number };
+  absensi: { tercatat: number; hadir: number; sakit: number; izin: number; alpa: number; belum: number; persen: number | null };
+  sholat: {
+    peserta: number;
+    dhuhur: { hadir: number; tidak_hadir: number; berhalangan: number; belum: number };
+    ashar: { hadir: number; tidak_hadir: number; berhalangan: number; belum: number };
+  };
+  siswa: SiswaKehadiran[];
+};

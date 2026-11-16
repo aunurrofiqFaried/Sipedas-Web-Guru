@@ -4,8 +4,8 @@ import DashboardPimpinan from "./dashboard";
 
 const menu = [
   { href: "/pimpinan/jurnal", judul: "Kepatuhan jurnal guru", ket: "Siapa yang rajin dan siapa yang melewatkan jurnal mengajar", aktif: true },
-  { href: "#", judul: "Absensi dan sholat semua kelas", ket: "Pantau kehadiran siswa per kelas", aktif: false },
-    { href: "/pimpinan/guru", judul: "Data guru", ket: "Beban jam, kepatuhan, dan piket", aktif: true },
+  { href: "/pimpinan/kehadiran", judul: "Absensi dan sholat semua kelas", ket: "Pantau kehadiran siswa per kelas", aktif: true },
+  { href: "/pimpinan/guru", judul: "Data guru", ket: "Beban jam, kepatuhan, dan piket", aktif: true },
   { href: "#", judul: "Jadwal sekolah", ket: "Jadwal semua kelas dan guru", aktif: false },
 ];
 
