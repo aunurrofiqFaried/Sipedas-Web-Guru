@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { getSession } from "@/lib/session";
 import DashboardPimpinan from "./dashboard";
 
 const menu = [
@@ -8,10 +9,15 @@ const menu = [
   { href: "#", judul: "Jadwal sekolah", ket: "Jadwal semua kelas dan guru", aktif: false },
 ];
 
-export default function Page() {
+export default async function Page() {
+  const user = await getSession();
+
+  // Nama depan saja: "Dr. Budi, M.Pd" -> "Dr."
+  const nama = (user?.name ?? "").split(" ")[0].split(",")[0] || "Pimpinan";
+
   return (
-    <div className="space-y-8">
-      <DashboardPimpinan />
+    <div className="space-y-6">
+      <DashboardPimpinan nama={nama} />
 
       <section className="space-y-3">
         <h2 className="text-lg font-semibold">Menu pimpinan</h2>

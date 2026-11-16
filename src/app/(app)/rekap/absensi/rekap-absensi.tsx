@@ -55,11 +55,13 @@ export default function RekapAbsensi() {
       ? data.filter((s) => s.nama.toLowerCase().includes(cari) || s.nis.includes(cari))
       : data;
 
-    return [...tersaring].sort((a, b) => {
-      if (urut.kolom === "nama") return a.nama.localeCompare(b.nama, "id") * urut.arah;
+    const { kolom, arah } = urut;
 
-      const nilai = (s: Baris) => (urut.kolom === "persen" ? (s.persen ?? -1) : s[urut.kolom]);
-      return (nilai(a) - nilai(b)) * urut.arah;
+    return [...tersaring].sort((a, b) => {
+      if (kolom === "nama") return a.nama.localeCompare(b.nama, "id") * arah;
+
+      const nilai = (s: Baris) => (kolom === "persen" ? (s.persen ?? -1) : s[kolom]);
+      return (nilai(a) - nilai(b)) * arah;
     });
   }, [rekap.data, kata, urut]);
 

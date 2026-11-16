@@ -247,6 +247,11 @@ export type Pengumuman = {
   tanggal: string;
   berlaku_sampai: string | null;
   pembuat: string | null;
+  // Diisi server: tombol ubah dan hapus hanya untuk pemilik atau admin dan kepala sekolah
+  dapat_diubah?: boolean;
+  // Hanya ada di daftar kelola pimpinan
+  is_aktif?: boolean;
+  kedaluwarsa?: boolean;
 };
 
 export type PengumumanResponse = {
@@ -520,3 +525,4 @@ export type DashboardPimpinanData = {
     tautan: string | null;
   }[];
 };
+

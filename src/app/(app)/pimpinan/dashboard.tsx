@@ -9,11 +9,12 @@ import type { DashboardPimpinanData } from "@/lib/types";
 
 /* ---------- Warna dan alat bantu ---------- */
 
+// Palet mengikuti tema aplikasi: hijau, oranye, merah, dan biru yang sama dengan halaman guru
 const NEON = {
-  hijau: ["#10b981", "#06b6d4"],
-  oranye: ["#f97316", "#f59e0b"],
-  merah: ["#ef4444", "#ec4899"],
-  biru: ["#0ea5e9", "#6366f1"],
+  hijau: ["#16a34a", "#15803d"],
+  oranye: ["#f97316", "#ea580c"],
+  merah: ["#dc2626", "#b91c1c"],
+  biru: ["#0284c7", "#0369a1"],
 } as const;
 
 type Gradasi = readonly [string, string];
@@ -65,12 +66,12 @@ function Bagian({
   children: React.ReactNode;
 }) {
   return (
-    <section className={className}>
-      <div className="mb-3 flex items-center justify-between gap-2 border-b border-gray-200 pb-2">
-        <h2 className="text-[11px] font-bold uppercase tracking-[0.18em] text-gray-500">{judul}</h2>
+    <section className={`flex flex-col ${className}`}>
+      <div className="mb-3 flex items-center justify-between gap-2">
+        <h2 className="text-lg font-semibold">{judul}</h2>
         {aksi}
       </div>
-      {children}
+      <div className="flex-1 rounded-3xl border border-white/80 bg-white/70 p-5 backdrop-blur">{children}</div>
     </section>
   );
 }
@@ -112,7 +113,7 @@ function Cincin({
           strokeWidth={tebal}
           strokeLinecap="round"
           strokeDasharray={`${(p / 100) * keliling} ${keliling}`}
-          style={{ filter: `drop-shadow(0 0 4px ${gradasi[0]}66)`, transition: "stroke-dasharray 0.8s ease" }}
+          style={{ transition: "stroke-dasharray 0.8s ease" }}
         />
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">{children}</div>
@@ -282,17 +283,15 @@ function Kpi({
   gradasi: Gradasi;
 }) {
   return (
-    <div className="md:px-5 md:first:pl-0">
-      <div className="flex items-center gap-2 text-gray-500">
-        <span
-          className="flex size-6 items-center justify-center rounded-md text-white"
-          style={{ background: `linear-gradient(135deg, ${gradasi[0]}, ${gradasi[1]})` }}
-        >
-          {ikon}
-        </span>
-        <span className="text-xs">{label}</span>
-      </div>
-      <p className="mt-2 text-3xl font-bold tabular-nums">{nilai}</p>
+    <div className="rounded-3xl border border-white/80 bg-white/70 p-4 backdrop-blur">
+      <span
+        className="flex size-9 items-center justify-center rounded-full"
+        style={{ background: `${gradasi[0]}26`, color: gradasi[0] }}
+      >
+        {ikon}
+      </span>
+      <p className="mt-3 text-2xl font-bold tabular-nums">{nilai}</p>
+      <p className="text-sm text-gray-500">{label}</p>
       {sub && <p className="mt-0.5 text-xs">{sub}</p>}
     </div>
   );
@@ -300,7 +299,7 @@ function Kpi({
 
 /* ---------- Dashboard ---------- */
 
-export default function DashboardPimpinan() {
+export default function DashboardPimpinan({ nama }: { nama: string }) {
   const q = useQuery({
     queryKey: ["dashboard-pimpinan"],
     queryFn: () => api<DashboardPimpinanData>("pimpinan/dashboard"),
@@ -308,12 +307,18 @@ export default function DashboardPimpinan() {
   });
 
   if (q.isPending) {
-    return <div className="h-[32rem] animate-pulse rounded-2xl bg-gray-100" />;
+    return (
+      <div className="space-y-4">
+        <div className="h-44 animate-pulse rounded-[1.75rem] bg-orange-100" />
+        <div className="h-40 animate-pulse rounded-3xl bg-gray-100" />
+        <div className="h-40 animate-pulse rounded-3xl bg-gray-100" />
+      </div>
+    );
   }
 
   if (q.isError) {
     return (
-      <div className="border-l-4 border-red-500 pl-4">
+      <div className="rounded-3xl border border-red-200 bg-red-50 p-6">
         <p className="font-medium text-red-700">{q.error.message}</p>
         <button onClick={() => q.refetch()} className="mt-3 rounded-xl bg-orange-600 px-4 py-2 text-sm font-semibold text-white">
           Coba lagi
@@ -334,35 +339,54 @@ export default function DashboardPimpinan() {
   const totalGuru = Math.max(1, kep.baik + kep.cukup + kep.kurang);
 
   return (
-    <div className="space-y-8">
-      {/* Kepala */}
-      <div className="flex flex-wrap items-end justify-between gap-3">
-        <div>
-          <p className="text-[11px] font-semibold tracking-[0.3em] text-orange-600">PUSAT KENDALI SEKOLAH</p>
-          <h1 className="text-3xl font-bold">Kondisi Sekolah</h1>
-          <p className="text-sm text-gray-500">
-            {d.hari.label}
-            {!d.hari.hari_ini && " · data hari efektif terakhir"}
-          </p>
-        </div>
+    <div className="space-y-6">
+      {/* Kartu sambutan */}
+      <section className="relative overflow-hidden rounded-[1.75rem] bg-gradient-to-br from-orange-500 to-orange-600 p-6 text-white">
+        <div className="absolute -right-10 -top-16 size-56 rounded-full bg-white/15" />
+        <div className="absolute -bottom-16 right-24 size-32 rounded-full bg-white/10" />
 
-        <div className="flex items-center gap-2 text-xs text-gray-500">
-          <span className="relative flex size-2.5">
-            <span className="absolute inline-flex size-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-            <span className="relative inline-flex size-2.5 rounded-full bg-emerald-500" />
-          </span>
-          <b className="text-emerald-600">LIVE</b> · diperbarui {jam}
-        </div>
-      </div>
+        <div className="relative">
+          <div className="flex flex-wrap items-start justify-between gap-3">
+            <div>
+              <p className="text-sm text-white/90">
+                {d.hari.label}
+                {!d.hari.hari_ini && " · data hari efektif terakhir"}
+              </p>
+              <h1 className="mt-1 text-2xl font-bold">Halo, {nama}</h1>
+            </div>
 
-      {d.hari.libur && (
-        <p className="border-l-4 border-amber-500 pl-3 text-sm text-amber-800">
-          Hari ini libur ({d.hari.libur}). Angka di bawah memakai data hari efektif terakhir.
-        </p>
-      )}
+            <div className="flex items-center gap-2 text-xs text-white/90">
+              <span className="relative flex size-2.5">
+                <span className="absolute inline-flex size-full animate-ping rounded-full bg-white opacity-75" />
+                <span className="relative inline-flex size-2.5 rounded-full bg-white" />
+              </span>
+              <b>LIVE</b> · diperbarui {jam}
+            </div>
+          </div>
+
+          {d.hari.libur && (
+            <p className="mt-3 max-w-xl rounded-2xl bg-white/20 px-4 py-2 text-sm">
+              Hari ini libur ({d.hari.libur}). Angka di bawah memakai data hari efektif terakhir.
+            </p>
+          )}
+
+          <div className="mt-5 grid max-w-sm grid-cols-2 gap-3">
+            <div className="rounded-2xl bg-white/20 px-4 py-3">
+              <p className="text-2xl font-bold">{teksPersen(a.persen)}</p>
+              <p className="text-xs text-white/90">Kehadiran siswa</p>
+            </div>
+            <div className="rounded-2xl bg-white/20 px-4 py-3">
+              <p className="text-2xl font-bold">
+                {d.jurnal_hari.terisi}/{d.jurnal_hari.total}
+              </p>
+              <p className="text-xs text-white/90">Jurnal hari ini</p>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* Baris 1: kehadiran, tren, peringatan */}
-      <div className="grid gap-x-10 gap-y-8 lg:grid-cols-2 xl:grid-cols-12">
+      <div className="grid gap-4 lg:grid-cols-2 xl:grid-cols-12">
         <Bagian judul="Kehadiran siswa" className="xl:col-span-5">
           <div className="flex flex-wrap items-center gap-6">
             <Cincin nilai={a.persen} ukuran={150} tebal={12} gradasi={gradPersen(a.persen)}>
@@ -419,11 +443,11 @@ export default function DashboardPimpinan() {
       </div>
 
       {/* Baris 2: ringkasan angka */}
-      <div className="grid grid-cols-2 gap-y-6 border-y border-gray-200 py-5 md:grid-cols-5 md:divide-x md:divide-gray-200">
-        <Kpi ikon={<Users className="size-3.5" />} label="Siswa aktif" nilai={d.ringkasan.siswa} sub={<span className="text-gray-500">{d.ringkasan.kelas} kelas</span>} gradasi={NEON.hijau} />
-        <Kpi ikon={<School className="size-3.5" />} label="Guru mengajar" nilai={d.ringkasan.guru_mengajar} sub={<span className="text-gray-500">pada hari data</span>} gradasi={NEON.biru} />
+        <div className="grid grid-cols-2 gap-3 md:grid-cols-5">
+        <Kpi ikon={<Users className="size-5" />} label="Siswa aktif" nilai={d.ringkasan.siswa} sub={<span className="text-gray-500">{d.ringkasan.kelas} kelas</span>} gradasi={NEON.hijau} />
+        <Kpi ikon={<School className="size-5" />} label="Guru mengajar" nilai={d.ringkasan.guru_mengajar} sub={<span className="text-gray-500">pada hari data</span>} gradasi={NEON.biru} />
         <Kpi
-          ikon={<BookOpen className="size-3.5" />}
+          ikon={<BookOpen className="size-5" />}
           label="Jurnal hari ini"
           nilai={`${d.jurnal_hari.terisi}/${d.jurnal_hari.total}`}
           sub={
@@ -436,7 +460,7 @@ export default function DashboardPimpinan() {
           gradasi={NEON.oranye}
         />
         <Kpi
-          ikon={<TriangleAlert className="size-3.5" />}
+          ikon={<TriangleAlert className="size-5" />}
           label="Pelanggaran bulan ini"
           nilai={pel.jumlah}
           sub={
@@ -447,7 +471,7 @@ export default function DashboardPimpinan() {
           gradasi={NEON.merah}
         />
         <Kpi
-          ikon={<ShieldAlert className="size-3.5" />}
+          ikon={<ShieldAlert className="size-5" />}
           label="SP menunggu"
           nilai={d.ringkasan.sp_menunggu}
           sub={<span className="text-gray-500">{d.ringkasan.mendekati_sp} siswa mendekati SP</span>}
@@ -456,7 +480,7 @@ export default function DashboardPimpinan() {
       </div>
 
       {/* Baris 3: sholat dan peta panas */}
-      <div className="grid gap-x-10 gap-y-8 xl:grid-cols-12">
+      <div className="grid gap-4 xl:grid-cols-12">
         <Bagian judul="Sholat hari ini" className="xl:col-span-3">
           <div className="grid grid-cols-2 gap-3">
             {(["dhuhur", "ashar"] as const).map((w) => {
@@ -486,7 +510,7 @@ export default function DashboardPimpinan() {
       </div>
 
       {/* Baris 4: kelas dan jurusan */}
-      <div className="grid gap-x-10 gap-y-8 lg:grid-cols-3">
+      <div className="grid gap-4 lg:grid-cols-3">
         <Bagian judul={`Kelas belum diabsen (${d.kelas_belum.length})`}>
           {d.kelas_belum.length === 0 ? (
             <p className="text-sm text-emerald-600">Semua kelas sudah diabsen.</p>
@@ -550,7 +574,7 @@ export default function DashboardPimpinan() {
       </div>
 
       {/* Baris 5: jurnal */}
-      <div className="grid gap-x-10 gap-y-8 lg:grid-cols-3">
+      <div className="grid gap-4 lg:grid-cols-3">
         <Bagian
           judul="Kepatuhan jurnal bulan ini"
           aksi={
@@ -627,7 +651,7 @@ export default function DashboardPimpinan() {
       </div>
 
       {/* Baris 6: kesiswaan */}
-      <div className="grid gap-x-10 gap-y-8 lg:grid-cols-12">
+      <div className="grid gap-4 lg:grid-cols-12">
         <Bagian judul="Pelanggaran 8 minggu" className="lg:col-span-6">
           <div className="flex h-36 items-end gap-2">
             {d.pelanggaran.mingguan.map((m) => (
@@ -703,7 +727,7 @@ export default function DashboardPimpinan() {
 
       {d.sp.menunggu.length > 0 && (
         <Bagian judul={`Usulan SP menunggu persetujuan (${d.ringkasan.sp_menunggu})`}>
-          <ul className="grid gap-x-10 md:grid-cols-2 xl:grid-cols-3">
+          <ul className="grid gap-x-6 md:grid-cols-2 xl:grid-cols-3">
             {d.sp.menunggu.map((s, i) => (
               <li key={i} className="border-b border-gray-100 py-2.5 text-sm">
                 <p className="font-semibold text-amber-800">
