@@ -526,3 +526,75 @@ export type DashboardPimpinanData = {
   }[];
 };
 
+// ---------- Data guru (pimpinan) ----------
+export type PiketGuru = {
+  hari: number;
+  hari_label: string;
+  jam: string;
+  tugas: string | null;
+};
+
+export type BarisGuru = {
+  id: number;
+  nama: string;
+  nip: string | null;
+  role: string;
+  role_label: string;
+  jam_per_minggu: number;
+  sesi_per_minggu: number;
+  jumlah_kelas: number;
+  jumlah_mapel: number;
+  wali_kelas: string[];
+  piket: PiketGuru[];
+  kepatuhan_persen: number | null;
+  kepatuhan_status: "baik" | "cukup" | "kurang" | null;
+};
+
+export type DataGuru = {
+  ringkasan: {
+    guru: number;
+    mengajar: number;
+    wali_kelas: number;
+    piket: number;
+    rata_jam: number | null;
+    jam_tertinggi: { nama: string; jam: number } | null;
+  };
+  guru: BarisGuru[];
+};
+
+export type SesiMengajar = {
+  jam_ke_mulai: number;
+  jam_ke_selesai: number;
+  jam_mulai: string;
+  jam_selesai: string;
+  kelas: string | null;
+  mapel: string | null;
+  ruang: string | null;
+};
+
+export type DetailDataGuru = {
+  guru: { id: number; nama: string; nip: string | null; role: string; role_label: string };
+  mengajar: { jam_per_minggu: number; sesi_per_minggu: number; jumlah_kelas: number; jumlah_mapel: number };
+  jadwal_mingguan: { hari: number; label: string; jam: number; sesi: SesiMengajar[] }[];
+  piket: PiketGuru[];
+  wali_kelas: string[];
+  kepatuhan: {
+    periode: { label: string };
+    ringkasan: {
+      seharusnya: number;
+      terisi: number;
+      terlewat: number;
+      persen: number | null;
+      status: "baik" | "cukup" | "kurang" | null;
+    };
+    terlewat: {
+      tanggal: string;
+      tanggal_label: string;
+      hari: string;
+      kelas: string | null;
+      mapel: string | null;
+      jam_ke_mulai: number;
+      jam_ke_selesai: number;
+    }[];
+  };
+};
